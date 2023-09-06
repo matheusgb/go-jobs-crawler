@@ -1,9 +1,21 @@
 package main
 
 import (
-	"github.com/matheusgb/go-jobs-crawler/crawler"
+	"fmt"
+
+	"github.com/matheusgb/go-jobs-crawler/scrapers"
 )
 
 func main() {
-	crawler.VisitPage()
+	var option int
+	fmt.Println("Select an option: ")
+	fmt.Println("1 - Linkedin")
+	fmt.Scanln(&option)
+
+	switch option {
+	case 1:
+		scrapers.LinkedinScrap()
+	default:
+		fmt.Println("Invalid option")
+	}
 }

@@ -12,15 +12,22 @@ func LinkedinScrap(recursion ...int) {
 	loadMorePages := ""
 	startQuery := 0
 	page := 1
+	tech := ""
+	region := ""
 
 	if len(recursion) > 0 {
 		page = recursion[0]
 		startQuery = recursion[1]
+	} else {
+		fmt.Println("Enter the technology you want to search for jobs:")
+		fmt.Scanln(&tech)
+		fmt.Println("Enter the region you want to search for jobs:")
+		fmt.Scanln(&region)
 	}
 
 	jobs := []structs.LinkedinJob{}
 	collyCollector := colly.NewCollector()
-	linkedinUrl := fmt.Sprintf("https://br.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Golang&location=Brasil&geoId=106057199&trk=public_jobs_jobs-search-bar_search-submit&start=%d", startQuery)
+	linkedinUrl := fmt.Sprintf("https://linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=%s&location=%s&geoId=106057199&trk=public_jobs_jobs-search-bar_search-submit&start=%d", tech, region, startQuery)
 
 	collyCollector.OnRequest(func(r *colly.Request) {
 		r.Headers.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36")

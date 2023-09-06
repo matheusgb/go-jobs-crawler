@@ -9,9 +9,11 @@ import (
 )
 
 func LinkedinScrap() {
+	loadMorePages := ""
+	startQuery := 0
 	jobs := []structs.LinkedinJob{}
 	collyCollector := colly.NewCollector()
-	linkedinUrl := "https://br.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Golang&location=Brasil&geoId=106057199&trk=public_jobs_jobs-search-bar_search-submit&start=0"
+	linkedinUrl := fmt.Sprintf("https://br.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Golang&location=Brasil&geoId=106057199&trk=public_jobs_jobs-search-bar_search-submit&start=%d", startQuery)
 
 	collyCollector.OnRequest(func(r *colly.Request) {
 		r.Headers.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36")
@@ -41,4 +43,14 @@ func LinkedinScrap() {
 		panic(err)
 	}
 	fmt.Println(string(json))
+
+	fmt.Println("Load more job opportunities? (y/n)")
+	fmt.Scanln(&loadMorePages)
+	if loadMorePages == "y" {
+		startQuery += 25
+		LinkedinScrap()
+	} else {
+		fmt.Println("Bye!")
+	}
+
 }

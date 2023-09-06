@@ -8,9 +8,16 @@ import (
 	"github.com/matheusgb/go-jobs-crawler/structs"
 )
 
-func LinkedinScrap() {
+func LinkedinScrap(recursion ...int) {
 	loadMorePages := ""
 	startQuery := 0
+	page := 1
+
+	if len(recursion) > 0 {
+		page = recursion[0]
+		startQuery = recursion[1]
+	}
+
 	jobs := []structs.LinkedinJob{}
 	collyCollector := colly.NewCollector()
 	linkedinUrl := fmt.Sprintf("https://br.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Golang&location=Brasil&geoId=106057199&trk=public_jobs_jobs-search-bar_search-submit&start=%d", startQuery)
@@ -44,11 +51,12 @@ func LinkedinScrap() {
 	}
 	fmt.Println(string(json))
 
-	fmt.Println("Load more job opportunities? (y/n)")
+	fmt.Printf("This is the end of page %d. Load more job opportunities? (y/n) ", page)
 	fmt.Scanln(&loadMorePages)
-	if loadMorePages == "y" {
+	if loadMorePages == "y" || loadMorePages == "Y" {
+		page++
 		startQuery += 25
-		LinkedinScrap()
+		LinkedinScrap(page, startQuery)
 	} else {
 		fmt.Println("Bye!")
 	}

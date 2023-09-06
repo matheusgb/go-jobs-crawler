@@ -1,6 +1,6 @@
 # Jobs Scraper
 
-This CLI application aims to unify vacancies posted on different platforms in a single place.
+This CLI application aims to unify job vacancies posted on different platforms in a single place
 
 
 ~~version 0.1~~
